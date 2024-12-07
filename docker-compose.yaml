@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0  # update docker image or version
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: camunda
+      MYSQL_USER: camunda_user
+      MYSQL_PASSWORD: camunda_pass
+    volumes:
+      - camunda-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u camunda_user -p'camunda_pass' || exit 1" ]
+      interval: 10s
+      retries: 5
+    networks:
+      - camunda-network
+
+  camunda:
+    image: camunda/camunda-bpm-platform:7.22.0 # update image and version
+    container_name: camunda
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_DRIVER=com.mysql.cj.jdbc.Driver
+      - DB_URL=jdbc:mysql://mysql:3306/camunda?useSSL=false&serverTimezone=UTC
+      - DB_USERNAME=camunda_user
+      - DB_PASSWORD=camunda_pass
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - camunda-network
+
+volumes:
+  camunda-mysql-data:
+
+networks:
+  camunda-network:
