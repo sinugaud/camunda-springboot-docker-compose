@@ -1,6 +1,4 @@
 # camunda-springboot-docker-compose
-Here's the content formatted as a `.md` file:
-
 # Camunda 7 with MySQL Integration Using Docker
 
 This guide outlines the process of configuring and deploying Camunda 7 with MySQL using Docker and Docker Compose. By the end of this setup, Camunda will utilize MySQL as its database for process and task management.
