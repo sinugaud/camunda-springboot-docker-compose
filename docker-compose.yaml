@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   mysql:
-    image: mysql:8.0  # update docker image or version
+    image: mysql:8.0
     container_name: mysql
     ports:
       - "3306:3306"
@@ -20,15 +20,15 @@ services:
       - camunda-network
 
   camunda:
-    image: camunda/camunda-bpm-platform:7.22.0 # update image and version
+    image: sinugaud/camunda-mysql-app:latest
     container_name: camunda
     ports:
       - "8080:8080"
     environment:
-      - DB_DRIVER=com.mysql.cj.jdbc.Driver
-      - DB_URL=jdbc:mysql://mysql:3306/camunda?useSSL=false&serverTimezone=UTC
-      - DB_USERNAME=camunda_user
-      - DB_PASSWORD=camunda_pass
+      SPRING_DATASOURCE_DRIVERCLASSNAME: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/camunda?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: camunda_user
+      SPRING_DATASOURCE_PASSWORD: camunda_pass
     depends_on:
       mysql:
         condition: service_healthy

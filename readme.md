@@ -1,0 +1,1 @@
+# Camunda 7 Spring boot custom image
